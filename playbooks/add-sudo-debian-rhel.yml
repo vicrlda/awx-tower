@@ -1,0 +1,57 @@
+---
+- hosts: all
+  #gather_facts: false
+  #connection: local
+  become: yes
+  
+  ## A webconsole AWX/TOWER nao suporta playbooks com prompt nativamente
+  ## Para tal utilize o recurso SURVEY presente no proprio AWX
+  ## TEMPLATES >> OPEN >> SURVEY
+  
+  ## Essa eh a forma tradicional e nativa, sem o uso do AWX
+  ## Registrado aqui para fins de exemplo e consulta
+  
+  #vars_prompt:
+    #- name: usrname
+    #  prompt: Qual usuario deseja adicionar?
+    #  private: no
+    #- name: passwd
+    #  prompt: Escreva uma senha para o mesmo!
+    #  private: yes
+    #  unsafe: yes
+    #  encrypt: sha512_crypt
+    #  confirm: yes
+    #  salt_size: 7
+    
+  #vars:
+    #usr: "{{ usrname }}"
+    #pss: "{{ passwd }}"
+    
+  ## Para mais detalhes, acesse:
+  #https://www.unixarena.com/2019/03/ansible-tower-awx-passing-variables-using-survey-extra-vars.html/
+    
+  tasks:
+  - debug:
+        msg: 'Você informou o seguinte nome: {{ usrname }} ... CONFIRMADO! '
+  
+  - name: RHEL-like <> Adicionando usuario e entregando poderes de ROOT ...
+    ansible.builtin.user:
+        name: "{{ usrname }}"
+        state: present
+        password: "{{ passwd | password_hash('sha512') }}"
+        update_password: on_create
+        groups: wheel
+        append: yes
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+  - name: DEBIAN-like <> Adicionando usuario e entregando poderes de ROOT ...
+    ansible.builtin.user:
+        name: "{{ usrname }}"
+        state: present
+        password: "{{ passwd | password_hash('sha512') }}"
+        update_password: on_create
+        groups: sudo
+        append: yes
+    when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+  
+...
