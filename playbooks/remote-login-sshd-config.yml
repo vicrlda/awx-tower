@@ -1,0 +1,26 @@
+---
+- hosts: all
+  become: yes
+  ##gather_facts: no
+  
+  tasks:
+  
+  - name: SSH-sshd <> Update configuration file ...
+    blockinfile:
+      path: /etc/ssh/sshd_config
+      insertbefore: BOF # Beginning of the file
+      marker: "# {mark} ANSIBLE MANAGED BLOCK BY LINUX-ADMIN"
+      block: |
+        PermitRootLogin yes
+        PubkeyAuthentication yes
+        AuthorizedKeysFile .ssh/authorized_keys
+        PasswordAuthentication yes
+      backup: yes
+      validate: /usr/sbin/sshd -T -f %s
+
+  - name: SSH-sshd <> Restart SSHD ...
+    service:
+      name: sshd
+      state: restarted
+ 
+...
