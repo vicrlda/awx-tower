@@ -15,7 +15,7 @@
         PubkeyAuthentication yes
         AuthorizedKeysFile .ssh/authorized_keys
         PasswordAuthentication yes
-        AllowUsers "{{ survey }}"
+        AllowUsers {{ survey }}
       backup: yes
       validate: /usr/sbin/sshd -T -f %s
 
