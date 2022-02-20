@@ -1,0 +1,18 @@
+---
+
+- hosts: all
+  become: yes
+  
+  tasks:
+    - name: Removendo funcionario(s) informado(s) e que foi(ram) desligado(s) ...
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ user1 }}"
+        - "{{ user2 }}"
+        
+    - debug:
+        msg: 'INFO <> a pasta /HOME/FUNCIONARIO nao foi apagada ... Fique tranquilo !!!'
+
+...
