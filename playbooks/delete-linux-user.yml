@@ -12,7 +12,7 @@
         - "{{ user1 }}"
         - "{{ user2 }}"
         
-    - debug:
-        msg: 'INFO <> a pasta /HOME/FUNCIONARIO nao foi apagada ... Fique tranquilo !!!'
+  - debug:
+      msg: 'INFO <> a pasta /HOME/FUNCIONARIO nao foi apagada ... Fique tranquilo !!!'
 
 ...
