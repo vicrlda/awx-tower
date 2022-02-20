@@ -4,11 +4,11 @@
   become: yes
   
   tasks:
-    - name: Removendo funcionario(s) informado(s) e que foi(ram) desligado(s) ...
-      ansible.builtin.user:
+  - name: Removendo funcionario(s) informado(s) e que foi(ram) desligado(s) ...
+    ansible.builtin.user:
         name: "{{ item }}"
         state: absent
-      loop:
+    loop:
         - "{{ user1 }}"
         - "{{ user2 }}"
         
