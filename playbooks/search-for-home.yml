@@ -1,0 +1,24 @@
+---
+
+- hosts: all
+  become: yes
+  
+  tasks:
+    - name: CAT <> validando exclusao do usuario ...
+      ansible.builtin.shell: cat /etc/passwd | grep "{{ user }}" || /bin/true
+      register: cat
+      
+    - debug:
+        msg="{{ cat.stdout_lines }}"
+            
+    - name: LS <> buscando pasta e arqs. do usuario ...
+      ansible.builtin.shell: ls -l /home | grep "{{ user }}" || /bin/true
+      register: ls
+      
+    - debug:
+        msg="{{ ls.stdout_lines }}"
+            
+    - debug:
+        msg: 'INFO <> ok (...) /HOME/FUNCIONARIO foi encontrada !!!'
+    
+...
